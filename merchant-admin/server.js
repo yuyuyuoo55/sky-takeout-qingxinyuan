@@ -2,9 +2,12 @@ const fs = require('fs')
 const http = require('http')
 const path = require('path')
 
-const host = '127.0.0.1'
-const port = 8888
-const backend = { host: '127.0.0.1', port: 8080 }
+const host = process.env.MERCHANT_HOST || '127.0.0.1'
+const port = Number(process.env.MERCHANT_PORT || 8888)
+const backend = {
+  host: process.env.BACKEND_HOST || '127.0.0.1',
+  port: Number(process.env.BACKEND_PORT || 8080)
+}
 const distDir = path.join(__dirname, 'dist')
 
 const mimeTypes = {
