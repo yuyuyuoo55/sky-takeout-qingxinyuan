@@ -34,12 +34,25 @@ jobs:
       - name: Verify demonstration login
         shell: bash
         run: |
-          curl --fail --silent \
-            --request POST \
-            --header "Content-Type: application/json" \
-            --data '{"username":"admin","password":"123456"}' \
-            http://127.0.0.1:8888/api/employee/login \
-            | jq --exit-status '.code == 1 and (.data.token | length > 0)' > /dev/null
+          for attempt in {1..30}; do
+            response="$(
+              curl --silent \
+                --request POST \
+                --header "Content-Type: application/json" \
+                --data '{"username":"admin","password":"123456"}' \
+                http://127.0.0.1:8888/api/employee/login || true
+            )"
+
+            if printf '%s' "$response" \
+              | jq --exit-status '.code == 1 and (.data.token | length > 0)' > /dev/null 2>&1; then
+              exit 0
+            fi
+
+            sleep 3
+          done
+
+          echo "Demonstration login did not succeed in time."
+          exit 1
 
       - name: Show service logs on failure
         if: failure()
