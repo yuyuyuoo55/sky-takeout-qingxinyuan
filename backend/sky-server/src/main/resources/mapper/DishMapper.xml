@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.DishMapper">
+    <select id="pageSelect" resultType="com.sky.entity.Dish">
+        select d.*,c.name as categoryName from dish d left outer join category c on d.category_id=c.id
+        <where>
+            <if test="name !=null and name !=''">
+                name like concat ('%',#{name},'%')
+            </if>
+            <if test="status !=null">
+                 and d.status=#{status}
+            </if>
+            <if test="categoryId !=null">
+                and category_id=#{categoryId}
+            </if>
+        </where>
+        order by d.create_time desc
+    </select>
+<!--    删除菜品-->
+    <delete id="deleteDish">
+        delete from dish where id in
+                <foreach collection="list" item="id" separator="," open="(" close=")">
+                    #{id}
+                </foreach>
+    </delete>
+<!--更新菜品-->
+    <update id="updateDish">
+        update dish
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="image != null">
+                image = #{image},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into dish (name, category_id, price, image, description, create_time, update_time, create_user, update_user)
+        values (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})
+    </insert>
+
+    <delete id="deleteByDishId">
+        delete from dish_flavor where dish_id = #{dishId}
+    </delete>
+
+    <insert id="saveFlavors">
+        insert into dish_flavor (name, dish_id) values
+        <foreach collection="flavors" item="item" separator=",">
+            (#{item.name}, #{item.dishId})
+        </foreach>
+    </insert>
+
+    <select id="countByMap" resultType="java.lang.Integer">
+        select count(id) from dish
+        <where>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+        </where>
+    </select>
+</mapper>

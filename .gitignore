@@ -1,0 +1,24 @@
+# Local runtime and build output
+runtime/
+**/target/
+*.log
+*.map
+
+# IDE and repository metadata
+**/.idea/
+**/.git/
+*.iml
+.DS_Store
+
+# Dependency folders
+**/node_modules/
+
+# Local configuration
+.env
+.env.*
+!.env.example
+project.config.json
+project.private.config.json
+**/project.config.json
+**/project.private.config.json
+.local/

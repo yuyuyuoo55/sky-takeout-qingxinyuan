@@ -1,0 +1,37 @@
+sky:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    host: ${DB_HOST:localhost}
+    port: ${DB_PORT:3306}
+    database: ${DB_NAME:sky_take_out}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+
+  alioss:
+    endpoint: ${OSS_ENDPOINT:https://oss-cn-shenzhen.aliyuncs.com}
+    bucket-name: ${OSS_BUCKET_NAME:}
+    access-key-id: ${OSS_ACCESS_KEY_ID:}
+    access-key-secret: ${OSS_ACCESS_KEY_SECRET:}
+
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    database: ${REDIS_DATABASE:10}
+
+  wechat:
+    appid: ${WECHAT_APP_ID:}
+    secret: ${WECHAT_APP_SECRET:}
+    mchid: ${WECHAT_MCH_ID:}
+    mch-serial-no: ${WECHAT_MCH_SERIAL_NO:}
+    private-key-file-path: ${WECHAT_PRIVATE_KEY_FILE_PATH:}
+    api-v3-key: ${WECHAT_API_V3_KEY:}
+    we-chat-pay-cert-file-path: ${WECHAT_PAY_CERT_FILE_PATH:}
+    notify-url: ${WECHAT_NOTIFY_URL:https://www.weixin.qq.com/wxpay/pay.php}
+    refund-notify-url: ${WECHAT_REFUND_NOTIFY_URL:https://www.weixin.qq.com/wxpay/pay.php}
+
+  shop:
+    address: ${SHOP_ADDRESS:YOUR_SHOP_ADDRESS_HERE}
+
+  baidu:
+    ak: ${BAIDU_MAP_AK:}
