@@ -1,0 +1,50 @@
+name: Docker quick-start check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  quick-start:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate Compose configuration
+        run: docker compose config
+
+      - name: Start all services
+        run: docker compose up --build -d
+
+      - name: Wait for merchant page
+        shell: bash
+        run: |
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:8888/ > /dev/null; then
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "Merchant page did not become ready in time."
+          exit 1
+
+      - name: Verify demonstration login
+        shell: bash
+        run: |
+          curl --fail --silent \
+            --request POST \
+            --header "Content-Type: application/json" \
+            --data '{"username":"admin","password":"123456"}' \
+            http://127.0.0.1:8888/api/employee/login \
+            | jq --exit-status '.code == 1 and (.data.token | length > 0)' > /dev/null
+
+      - name: Show service logs on failure
+        if: failure()
+        run: docker compose logs
+
+      - name: Stop services
+        if: always()
+        run: docker compose down -v
