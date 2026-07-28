@@ -41,6 +41,14 @@
 
 ![清心园菜品管理](./docs/screenshots/dishes.png)
 
+### 小程序端（隐私已脱敏）
+
+以下截图中的地址、姓名、手机号和个人头像已做打码处理。
+
+| 点餐页 | 提交订单 | 个人中心 |
+| --- | --- | --- |
+| <img src="./docs/screenshots/miniprogram-menu-redacted.png" alt="清心园小程序点餐页" width="240"> | <img src="./docs/screenshots/miniprogram-checkout-redacted.png" alt="清心园小程序提交订单页" width="240"> | <img src="./docs/screenshots/miniprogram-profile-redacted.png" alt="清心园小程序个人中心" width="240"> |
+
 ## 项目结构
 
 ```text
@@ -89,6 +97,8 @@ Spring Boot 后端：8080
 ## 推荐：Docker 一键启动
 
 这是最省事的运行方式。安装并启动 Docker Desktop 后，只需要 Git 和 Docker，不需要在本机分别安装 Java、Maven、MySQL、Redis、Node.js。
+
+> Docker 一键启动范围仅包括 MySQL、Redis、Java 后端和商家管理端，不包含微信小程序。小程序需要按下方说明手动导入微信开发者工具。
 
 ### 1. 克隆并启动
 
@@ -265,11 +275,13 @@ http://127.0.0.1:8888
 
 ## 微信小程序
 
-使用微信开发者工具导入：
+小程序不参与 Docker Compose 一键启动。先启动后端，再使用微信开发者工具手动导入：
 
 ```text
 miniprogram
 ```
+
+导入时请使用自己的 AppID，或选择适合本地调试的测试方式，并让开发者工具在本地生成项目配置文件。仓库不会上传 `project.config.json` 和 `project.private.config.json`。
 
 本机模拟器可访问 `http://localhost:8080`。真机调试不能使用手机自身的 `localhost`，需要改为局域网地址或已配置的 HTTPS 域名。
 
